@@ -23,7 +23,7 @@ class Products extends Model{
                 type:Sequelize.BOOLEAN,
                 defaultValue: false
             }
-        },{sequelize})
+        },{sequelize,timestamps: true})
         return this
     }
 }
