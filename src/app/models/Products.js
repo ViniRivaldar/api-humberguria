@@ -26,5 +26,11 @@ class Products extends Model{
         },{sequelize,timestamps: true})
         return this
     }
+    static associate(models) {
+        this.belongsTo(models.Category, { 
+            foreignKey: 'category_id', 
+            as: 'category' 
+        });
+    }
 }
 export default Products
