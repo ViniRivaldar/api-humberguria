@@ -31,12 +31,85 @@ class ProductController{
 
           
     }
-    index(req,res){
-        res.send("olá mundo")
+    async index(req,res){
+        try {
+            const products = await Product.findAll();
+            return res.json(products);
+        } catch (e) {
+            return res.status(500).json({
+                error: 'Erro ao buscar produtos',
+                message: e.message
+            });
+        }
     }
-    show(req,res){}
-    update(req,res){}
-    delete(req,res){}
+    async show(req,res){
+        try {
+            const { id } = req.params;
+            const product = await Product.findByPk(id);
+
+            if (!product) {
+                return res.status(404).json({ error: 'Produto não encontrado' });
+            }
+
+            return res.json(product);
+        } catch (e) {
+            return res.status(500).json({
+                error: 'Erro ao buscar produto',
+                message: e.message
+            });
+        }
+    }
+    async update(req,res){
+        const productSchema = yup.object().shape({
+            name: yup.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
+            price: yup.number().positive('Preço deve ser positivo'),
+            description: yup.string().max(255, 'Descrição muito longa'),
+            offer: yup.boolean()
+        });
+
+        try {
+            const { id } = req.params;
+            const product = await Product.findByPk(id);
+
+            if (!product) {
+                return res.status(404).json({ error: 'Produto não encontrado' });
+            }
+
+            const validatedData = await productSchema.validate(req.body, { abortEarly: false });
+            await product.update(validatedData);
+
+            return res.json(product);
+        } catch (e) {
+            if (e instanceof yup.ValidationError) {
+                return res.status(400).json({
+                    errors: e.errors
+                });
+            }
+
+            return res.status(500).json({
+                error: 'Erro ao atualizar produto',
+                message: e.message
+            });
+        }
+    }
+    async delete(req,res){
+        try {
+            const { id } = req.params;
+            const product = await Product.findByPk(id);
+
+            if (!product) {
+                return res.status(404).json({ error: 'Produto não encontrado' });
+            }
+
+            await product.destroy();
+            return res.status(204).send();
+        } catch (e) {
+            return res.status(500).json({
+                error: 'Erro ao deletar produto',
+                message: e.message
+            });
+        }
+    }
 }
 
 export default new ProductController()
