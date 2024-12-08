@@ -10,6 +10,7 @@ class CategoryController{
             });
             return res.json(categories);
         } catch (error) {
+            console.log(error)
             return res.status(500).json({ error: 'Erro ao listar categorias' });
         }
     }

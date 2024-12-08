@@ -24,6 +24,11 @@ class Category extends Model {
             foreignKey: 'category_id', 
             as: 'product' 
         });
+
+        this.hasMany(models.FotoCategory, {
+            foreignKey: 'category_id',
+            as: 'foto_category', 
+        });
     }
 }
 

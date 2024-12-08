@@ -4,8 +4,9 @@ import configDatabase from '../config/database.js'
 import Products from '../app/models/Products.js';
 import Category from '../app/models/Category.js';
 import FotoProducts from '../app/models/FotoProducts.js';
+import FotoCategory from '../app/models/FotoCategory.js';
 
-const models = [Products, Category, FotoProducts];
+const models = [Products, Category, FotoProducts,FotoCategory];
 
 class Database {
     constructor() {
