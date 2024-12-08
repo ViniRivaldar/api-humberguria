@@ -1,8 +1,10 @@
 import { Router } from "express";
-import FotoProductController from '../controller/FotoProductController.js'
+import FotoProductController from "../controller/FotoProductController.js";
+import upload from "../../config/MulterConfig.js";
 
-const router = new Router()
+const router = new Router();
 
-router.get('/', FotoProductController.index)
 
-export default router
+router.post("/", upload.single("file"), FotoProductController.store);
+
+export default router;
