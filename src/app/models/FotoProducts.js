@@ -1,36 +1,58 @@
-import Sequelize, {Model} from 'sequelize'
+import Sequelize, { Model } from 'sequelize';
 
-class FotoProducts extends Model{
-    static init(Sequelize){
+class FotoProducts extends Model {
+    static init(sequelize) {
         super.init({
-            originalmente:{
-                type:Sequelize.STRING,
+            id: {
+                type: Sequelize.UUID,
+                defaultValue: Sequelize.UUIDV4,
+                primaryKey: true,
+            },
+            originalmente: {
+                type: Sequelize.STRING,
                 defaultValue: '',
-                validate:{
-                    notEmpty:{
-                        msg: 'o campo não ser vazio'
+                validate: {
+                    notEmpty: {
+                        msg: 'o campo não pode ser vazio'
                     }
                 }
             },
-            filename:{
-                type:Sequelize.STRING,
+            filename: {
+                type: Sequelize.STRING,
                 defaultValue: '',
-                validate:{
-                  notEmpty:{
-                    msg: 'o campo não ser vazio'
-                  }
+                validate: {
+                    notEmpty: {
+                        msg: 'o campo não pode ser vazio'
+                    }
                 }
             },
-            url:{
-                type:Sequelize.VIRTUAL,
-                get(){
-                  return this.getDataValue('filename');
+            products_id: {
+                type: Sequelize.UUID,
+                allowNull: true  
+            },
+            url: {
+                type: Sequelize.VIRTUAL,
+                get() {
+                    console.log('Filename:', this.getDataValue(__filename));
+                    return `https://res.cloudinary.com/dij2lqiy7/image/upload/v1733686091/hamburgueria/products/${this.getDataValue('filename')}`;
                 }
             }
-        },{sequelize})
+        }, {
+            sequelize,
+            modelName: 'FotoProducts',
+            tableName: 'foto_products', 
+            timestamps: true,
+            underscored: true 
+        });
+        return this;
     }
 
-    static associate(models){
-        this.belongsTo(models.Proucts, {foreignKey: 'products_id'})
+    static associate(models) {
+        this.belongsTo(models.Products, { 
+            foreignKey: 'products_id',
+            as: 'product'
+        });
     }
 }
+
+export default FotoProducts;

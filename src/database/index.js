@@ -3,18 +3,28 @@ import Sequelize from 'sequelize';
 import configDatabase from '../config/database.js'
 import Products from '../app/models/Products.js';
 import Category from '../app/models/Category.js';
+import FotoProducts from '../app/models/FotoProducts.js';
 
-const models = [Products,Category]
+const models = [Products, Category, FotoProducts];
 
 class Database {
-    constructor(){
-        this.init()
+    constructor() {
+        this.init();
     }
-    init(){
-        this.connection = new Sequelize(configDatabase)
-        models.map( model=>model.init(this.connection)).map(model => model.associate && model.associate(this.connection.models))
+    
+    init() {
+        this.connection = new Sequelize(configDatabase);
+        
+        
+        models.forEach(model => model.init(this.connection));
+        
+        
+        models.forEach(model => {
+            if (model.associate) {
+                model.associate(this.connection.models);
+            }
+        });
     }
 }
 
-export default new Database()
-
+export default new Database();
