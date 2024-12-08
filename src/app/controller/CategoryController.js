@@ -1,12 +1,18 @@
 import * as yup from 'yup'
 
 import Category from '../models/Category.js'
+import FotoCategory from '../models/FotoCategory.js';
 
 class CategoryController{
     async index(req,res){
         try {
             const categories = await Category.findAll({
-                attributes: ['id', 'name']
+                attributes: ['id', 'name'],
+                include:[{
+                    model: FotoCategory,
+                    as:'foto_category',
+                    attributes:['id','url','filename']
+                }]
             });
             return res.json(categories);
         } catch (error) {
