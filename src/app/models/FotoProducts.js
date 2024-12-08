@@ -34,7 +34,6 @@ class FotoProducts extends Model {
                 type: Sequelize.VIRTUAL,
                 get() {
                     const filename = this.getDataValue('filename');
-                    console.log('Filename:', filename);
                     return `https://res.cloudinary.com/dij2lqiy7/image/upload/v1733686091/${filename}`
                 }
             }
