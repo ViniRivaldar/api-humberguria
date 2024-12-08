@@ -1,6 +1,7 @@
 import * as yup from 'yup';
 import Product from '../models/Products.js';
 import Category from '../models/Category.js'; 
+import FotoProducts from '../models/FotoProducts.js';
 
 class ProductController {
     async store(req, res) {
@@ -45,7 +46,13 @@ class ProductController {
                     model: Category,
                     as: 'category', 
                     attributes: ['id', 'name'],
-                }],
+                },
+                {
+                    model: FotoProducts, 
+                    as: 'foto_products', 
+                    attributes: ['id','url','filename'], 
+                }
+            ],
             });
             return res.json(products);
         } catch (e) {
@@ -64,7 +71,13 @@ class ProductController {
                     model: Category,
                     as: 'category',
                     attributes: ['id', 'name'],
-                }],
+                },
+                {
+                    model: FotoProducts, 
+                    as: 'foto_products', 
+                    attributes: ['id','url','filename'], 
+                }
+            ],
             });
 
             if (!product) {

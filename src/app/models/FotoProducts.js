@@ -33,8 +33,9 @@ class FotoProducts extends Model {
             url: {
                 type: Sequelize.VIRTUAL,
                 get() {
-                    console.log('Filename:', this.getDataValue(__filename));
-                    return `https://res.cloudinary.com/dij2lqiy7/image/upload/v1733686091/hamburgueria/products/${this.getDataValue('filename')}`;
+                    const filename = this.getDataValue('filename');
+                    console.log('Filename:', filename);
+                    return `https://res.cloudinary.com/dij2lqiy7/image/upload/v1733686091/${filename}`
                 }
             }
         }, {

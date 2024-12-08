@@ -31,6 +31,12 @@ class Products extends Model{
             foreignKey: 'category_id', 
             as: 'category' 
         });
+
+        this.hasMany(models.FotoProducts, {
+            foreignKey: 'products_id',
+            as: 'foto_products', 
+        });
     }
+    
 }
 export default Products
